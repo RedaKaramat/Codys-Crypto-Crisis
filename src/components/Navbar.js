@@ -1,48 +1,73 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useGame } from '../context/GameContext';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Howl } from 'howler';
+import music from '../assets/Lacrimosa.mp3';
+import './../App.css';
 
-function Navbar() {
+const Navbar = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { username, setDifficulty, portfolio } = useGame();
   const [isMuted, setIsMuted] = useState(false);
-  const audioRef = useRef(null);
-
-  const handleRestart = () => {
-    setDifficulty('');
-    navigate('/difficulty');
-  };
+  const [sound, setSound] = useState(null);
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.muted = isMuted;
-      if (!isMuted) {
-        audioRef.current.play().catch(() => {});
-      } else {
-        audioRef.current.pause();
-      }
+    const musicInstance = new Howl({
+      src: [music],
+      autoplay: true,
+      loop: true,
+      volume: 0.5
+    });
+
+    setSound(musicInstance);
+    musicInstance.play();
+
+    return () => {
+      musicInstance.stop();
+    };
+  }, []);
+
+  // Toggle music mute state
+  const toggleMusic = () => {
+    if (!sound) return;
+
+    if (isMuted) {
+      sound.mute(false);
+    } else {
+      sound.mute(true);
     }
-  }, [isMuted]);
+    setIsMuted(!isMuted);
+  };
 
   return (
-    <nav className="navbar">
-      <audio ref={audioRef} src={`${process.env.PUBLIC_URL}/Lacrimosa.mp3`} loop autoPlay />
-      <div className="navbar-left">
-        <img src={`${process.env.PUBLIC_URL}/phantom_2.png`} alt="logo" className="logo" />
-        <span className="title">Cody's Crypto Crisis</span>
+    <nav className="bg-black text-white border-b-2 border-purple-700 py-6 px-8 flex justify-between items-center text-xl">
+      {/* Left: logo + title */}
+      <div className="flex items-center gap-4">
+        <img
+          src={`${process.env.PUBLIC_URL}/phantom_2.png`}
+          alt="Logo"
+          className="h-12 w-12 object-contain"
+        />
+        <h1 className="font-bold text-3xl text-white">
+          Cody's Crypto Crisis
+        </h1>
       </div>
 
-      <div className="navbar-right">
-        {username && location.pathname === '/game' && (
-          <>
-            <button onClick={handleRestart}>🔁 Restart</button>
-          </>
-        )}
-        <button onClick={() => setIsMuted(!isMuted)}>{isMuted ? '🔈' : '🔊'}</button>
+      {/* Right: Restart + Sound */}
+      <div className="flex items-center gap-6">
+        <button
+          onClick={() => navigate('/difficulty')}
+          className="text-blue-400 hover:text-blue-600 font-semibold flex items-center gap-2 text-xl"
+        >
+          🔁 Restart
+        </button>
+        <button
+          onClick={toggleMusic}
+          className="text-blue-400 hover:text-blue-600 text-3xl"
+        >
+          {isMuted ? '🔇' : '🔊'}
+        </button>
       </div>
     </nav>
   );
-}
+};
 
 export default Navbar;
