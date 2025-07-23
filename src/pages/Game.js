@@ -125,10 +125,10 @@ const Game = () => {
             </div>
 
             <div className="flex justify-center gap-4 mb-6 text-lg">
-                <button onClick={() => handleAnswer('Long')} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded font-bold">Long</button>
-                <button onClick={() => handleAnswer('Short')} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-bold">Short</button>
-                <button onClick={() => handleAnswer('No-trade')} className="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded font-bold">No Trade</button>
-                <button onClick={() => setFeedback({ type: 'hint', message: `Hint: ${currentChart.pattern}` })} className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded font-bold">Hint</button>
+                <button onClick={() => handleAnswer('Long')} className="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded font-bold">Long</button>
+                <button onClick={() => handleAnswer('Short')} className="bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded font-bold">Short</button>
+                <button onClick={() => handleAnswer('No-trade')} className="bg-gray-700 hover:bg-gray-800 text-white px-5 py-3 rounded font-bold">No Trade</button>
+                <button onClick={() => setFeedback({ type: 'hint', message: `Hint: ${currentChart.pattern}` })} className="bg-purple-600 hover:bg-purple-700 text-white px-5 py-3 rounded font-bold">Hint</button>
             </div>
 
             {feedback && (
